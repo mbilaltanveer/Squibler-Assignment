@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="editor">
+        <div *ngIf="selectedProject.id else nofile">
+            <p>Current Project: {{selectedProject.name}}</p>
+            <quill-editor 
+                class="content-editor" 
+                [styles]="{'min-height': '120px', 'min-width':'200px'}" 
+                [placeholder]="'Enter your text here'"
+                (onFocus)="focus($event)" 
+                (onBlur)="blur($event)" 
+                (onEditorCreated)="created($event)"
+                (onSelectionChanged)="onSelectionChanged($event)"
+                [(ngModel)]="selectedProjectData"
+            ></quill-editor>
+
+            <div *ngIf="defintion" class="definition">
+                <h4>Definition of word "{{highlightedText}}"</h4>
+                {{defintion}}
+            </div>
+        </div>
+        <ng-template #nofile>
+            <div class="no-file-selected">
+                <p>Click "Create New Project" to add a new project</p>
+                <p>Click "Save Changes" after making changes to an existing project</p>
+            </div>
+        </ng-template>
+    </div>
+
+    <div class="main-dashboard-wrapper">
+        <div class="projects-list">
+            <button class="buttons-class" (click)="createProject()">Create New Project</button>
+            <button class="buttons-class" (click)="updateTextData(selectedProject.id, selectedProjectData)">Save Changes</button>
+            <p>All Projects:</p>
+            <p>Choose a project to edit</p>
+            <ul *ngIf="projects">
+                <li *ngFor="let project of projects" (click)="getProject(project.id)">
+                    {{ project.name }}
+                </li>
+            </ul>
+            <button class="buttons-class" (click)="logout()">Logout</button>
+        </div>
+    </div>
+</div>
